@@ -346,6 +346,60 @@ def main():
                 paths = reporter.export_all_html()
                 logger.info(f"Exported {len(paths)} audit reports to data/reports/")
 
+        elif command == 'import-csv':
+            if len(sys.argv) < 3:
+                logger.error("Usage: python main.py import-csv <path_to_csv>")
+                logger.info("       python main.py import-csv --template   (generate sample CSV)")
+                return
+            arg = sys.argv[2]
+            from utils.csv_importer import LeadImporter
+            if arg == '--template':
+                path = LeadImporter.generate_template()
+                logger.info(f"Sample template created at: {path}")
+                logger.info("Edit that file with your leads, then run:")
+                logger.info(f"  python main.py import-csv {path}")
+            else:
+                LeadImporter.import_csv(arg)
+
+        elif command == 'add-lead':
+            if len(sys.argv) < 4:
+                logger.error('Usage: python main.py add-lead "Business Name" "https://website.com" [options]')
+                logger.info('Options:')
+                logger.info('  --email    "email@example.com"')
+                logger.info('  --phone    "555-123-4567"')
+                logger.info('  --industry "restaurant"')
+                logger.info('  --location "City, ST"')
+                return
+
+            biz_name = sys.argv[2]
+            website  = sys.argv[3]
+
+            # Parse optional flags
+            extras = {}
+            i = 4
+            while i < len(sys.argv) - 1:
+                flag = sys.argv[i].lstrip('-').lower()
+                val  = sys.argv[i + 1]
+                if flag in ('email', 'phone', 'industry', 'location'):
+                    extras[flag] = val
+                i += 2
+
+            # URL cleanup
+            if not website.startswith(('http://', 'https://')):
+                website = 'https://' + website
+
+            if LeadRepository.exists(website):
+                logger.warning(f"Lead already exists for {website}")
+                return
+
+            lead = LeadRepository.create(
+                business_name=biz_name,
+                website_url=website,
+                source='manual_add',
+                **extras
+            )
+            logger.info(f"✓ Lead #{lead.id} created: {biz_name} — {website}")
+
         elif command == 'test-smtp':
             from outreach.email_sender import EmailSender
             sender = EmailSender()
@@ -389,6 +443,10 @@ Usage: python main.py <command> [options]
 ── Data Collection ──
   test-scraper              Generate 5 sample leads for testing
   scrape [limit] [loc] [cat]  Scrape leads from Hotfrog
+  add-lead "Name" "URL" [--email X --phone X --industry X --location X]
+                            Manually add a single lead
+  import-csv <file.csv>     Bulk-import leads from a CSV file
+  import-csv --template     Generate a sample CSV template
 
 ── Intelligence Layer ──
   audit [limit]             Run website audits on unaudited leads
@@ -415,6 +473,9 @@ Usage: python main.py <command> [options]
 
 Examples:
   python main.py test-scraper        # Create sample leads
+  python main.py add-lead "Joe's Diner" "https://joesdiner.com" --industry restaurant
+  python main.py import-csv leads.csv  # Bulk-import from CSV
+  python main.py import-csv --template # Get a sample CSV to fill in
   python main.py audit 5             # Audit 5 websites
   python main.py score               # Score all audited leads
   python main.py generate 3          # Generate 3 outreach emails
