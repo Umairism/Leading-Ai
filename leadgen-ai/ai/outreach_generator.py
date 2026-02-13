@@ -294,6 +294,34 @@ class OutreachGenerator:
             logger.debug(f"Raw response: {response[:200]}")
             return self._fallback_email(business_name, industry, location, audit_summary, service)
     
+    @staticmethod
+    def _industry_plural(industry: str) -> str:
+        """Convert industry name to natural plural for use in sentences."""
+        plurals = {
+            'restaurant': 'restaurants',
+            'dental': 'dental offices',
+            'medical': 'medical practices',
+            'clinic': 'clinics',
+            'law firm': 'law firms',
+            'real estate': 'real estate agencies',
+        }
+        return plurals.get(industry.lower(), f"{industry} businesses")
+    
+    @staticmethod
+    def _possessive(name: str) -> str:
+        """Make a business name possessive, handling LLC/Inc/etc."""
+        # Strip trailing punctuation for clean possessive
+        suffixes = [', LLC', ', Inc', ', Inc.', ', Ltd', ', Ltd.', ' LLC', ' Inc', ' Inc.']
+        clean = name
+        for s in suffixes:
+            if clean.endswith(s):
+                clean = clean[:-len(s)]
+                break
+        
+        if clean.endswith('s'):
+            return f"{clean}'"
+        return f"{clean}'s"
+    
     def _fallback_email(self, business_name: str, industry: str, location: str,
                         audit_summary: Dict, service: str) -> Dict:
         """
@@ -302,6 +330,9 @@ class OutreachGenerator:
         """
         problems = audit_summary.get('top_problems', [])
         urgency = audit_summary.get('urgency', 'medium')
+        
+        industry_pl = self._industry_plural(industry)
+        biz_possessive = self._possessive(business_name)
         
         # Pick the most concrete, understandable problem for the opener
         main_problem = problems[0] if problems else 'a few things that might be costing you customers'
@@ -312,15 +343,15 @@ class OutreachGenerator:
         elif any('search' in p or 'Google' in p for p in problems):
             subject_line = f"Is {business_name} showing up in local search?"
         elif any('Not Secure' in p or 'ssl' in p.lower() for p in problems):
-            subject_line = f"{business_name}'s website shows a security warning"
+            subject_line = f"{biz_possessive} website shows a security warning"
         else:
-            subject_line = f"Spotted something on {business_name}'s website"
+            subject_line = f"Spotted something on {biz_possessive} website"
         
         # Build email body — conversational, specific, short
         body_lines = [
             f"Hi,",
             f"",
-            f"I came across {business_name} while researching {industry}s in {location} "
+            f"I came across {business_name} while researching {industry_pl} in {location} "
             f"and took a quick look at your website.",
             f"",
             # Improvement 1: Authority hint — subtle, not arrogant
@@ -339,14 +370,14 @@ class OutreachGenerator:
         # Improvement 2: Competitive fear — make loss visual
         if urgency == 'high':
             body_lines.append(
-                f"When a {industry}'s site is slow or hard to find, visitors tend to "
+                f"When a local business's site is slow or hard to find, visitors tend to "
                 f"check the next option instead — and in {location}, there's always "
                 f"a next option. That's traffic and bookings going to a competitor."
             )
         else:
             body_lines.append(
                 f"These are the kinds of small things that quietly push potential "
-                f"customers toward a competitor — someone searches for a {industry} "
+                f"customers toward a competitor — someone searches for {industry_pl} "
                 f"nearby, your site doesn't load right, and they just pick the next one."
             )
         

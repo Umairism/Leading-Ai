@@ -1,0 +1,85 @@
+{
+  "url": "https://www.dickstokes.com/",
+  "status": "completed",
+  "performance_score": 42,
+  "seo_score": 77,
+  "accessibility_score": 65,
+  "best_practices_score": 96,
+  "mobile_friendly": false,
+  "core_web_vitals": {
+    "lcp": {
+      "value": "9.7\u00a0s",
+      "score": 0,
+      "label": "Largest Contentful Paint"
+    },
+    "inp": {
+      "value": "110\u00a0ms",
+      "score": 93,
+      "label": "Interaction to Next Paint"
+    },
+    "cls": {
+      "value": "0.607",
+      "score": 10,
+      "label": "Cumulative Layout Shift"
+    },
+    "fcp": {
+      "value": "2.7\u00a0s",
+      "score": 60,
+      "label": "First Contentful Paint"
+    },
+    "tbt": {
+      "value": "90\u00a0ms",
+      "score": 99,
+      "label": "Total Blocking Time"
+    },
+    "speed_index": {
+      "value": "6.7\u00a0s",
+      "score": 35,
+      "label": "Speed Index"
+    }
+  },
+  "major_issues": [
+    {
+      "issue": "Images missing alt text",
+      "severity": "critical",
+      "score": 0,
+      "details": ""
+    },
+    {
+      "issue": "Non-descriptive link text",
+      "severity": "critical",
+      "score": 0,
+      "details": "1 link found"
+    },
+    {
+      "issue": "CSS files not minified",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 7\u00a0KiB"
+    },
+    {
+      "issue": "JavaScript files not minified",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 36\u00a0KiB"
+    },
+    {
+      "issue": "Large amount of unused CSS",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 71\u00a0KiB"
+    },
+    {
+      "issue": "Large amount of unused JavaScript",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 285\u00a0KiB"
+    }
+  ],
+  "raw_scores": {
+    "performance": 42,
+    "seo": 77,
+    "accessibility": 65,
+    "best_practices": 96
+  }
+}

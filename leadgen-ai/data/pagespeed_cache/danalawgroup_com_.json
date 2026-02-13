@@ -1,0 +1,61 @@
+{
+  "url": "https://danalawgroup.com/",
+  "status": "completed",
+  "performance_score": 73,
+  "seo_score": 100,
+  "accessibility_score": 92,
+  "best_practices_score": 100,
+  "mobile_friendly": false,
+  "core_web_vitals": {
+    "lcp": {
+      "value": "5.3\u00a0s",
+      "score": 22,
+      "label": "Largest Contentful Paint"
+    },
+    "inp": {
+      "value": "80\u00a0ms",
+      "score": 99,
+      "label": "Interaction to Next Paint"
+    },
+    "cls": {
+      "value": "0.054",
+      "score": 98,
+      "label": "Cumulative Layout Shift"
+    },
+    "fcp": {
+      "value": "2.6\u00a0s",
+      "score": 63,
+      "label": "First Contentful Paint"
+    },
+    "tbt": {
+      "value": "30\u00a0ms",
+      "score": 100,
+      "label": "Total Blocking Time"
+    },
+    "speed_index": {
+      "value": "5.1\u00a0s",
+      "score": 62,
+      "label": "Speed Index"
+    }
+  },
+  "major_issues": [
+    {
+      "issue": "Large amount of unused CSS",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 44\u00a0KiB"
+    },
+    {
+      "issue": "Large amount of unused JavaScript",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 64\u00a0KiB"
+    }
+  ],
+  "raw_scores": {
+    "performance": 73,
+    "seo": 100,
+    "accessibility": 92,
+    "best_practices": 100
+  }
+}

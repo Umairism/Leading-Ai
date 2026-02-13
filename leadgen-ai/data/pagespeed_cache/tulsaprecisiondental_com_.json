@@ -1,0 +1,79 @@
+{
+  "url": "https://tulsaprecisiondental.com/",
+  "status": "completed",
+  "performance_score": 39,
+  "seo_score": 92,
+  "accessibility_score": 72,
+  "best_practices_score": 81,
+  "mobile_friendly": false,
+  "core_web_vitals": {
+    "lcp": {
+      "value": "10.9\u00a0s",
+      "score": 0,
+      "label": "Largest Contentful Paint"
+    },
+    "inp": {
+      "value": "190\u00a0ms",
+      "score": 69,
+      "label": "Interaction to Next Paint"
+    },
+    "cls": {
+      "value": "0.098",
+      "score": 90,
+      "label": "Cumulative Layout Shift"
+    },
+    "fcp": {
+      "value": "4.0\u00a0s",
+      "score": 23,
+      "label": "First Contentful Paint"
+    },
+    "tbt": {
+      "value": "990\u00a0ms",
+      "score": 28,
+      "label": "Total Blocking Time"
+    },
+    "speed_index": {
+      "value": "5.2\u00a0s",
+      "score": 60,
+      "label": "Speed Index"
+    }
+  },
+  "major_issues": [
+    {
+      "issue": "Images missing alt text",
+      "severity": "critical",
+      "score": 0,
+      "details": ""
+    },
+    {
+      "issue": "CSS files not minified",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 4\u00a0KiB"
+    },
+    {
+      "issue": "JavaScript files not minified",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 139\u00a0KiB"
+    },
+    {
+      "issue": "Large amount of unused CSS",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 123\u00a0KiB"
+    },
+    {
+      "issue": "Large amount of unused JavaScript",
+      "severity": "critical",
+      "score": 0,
+      "details": "Est savings of 1,151\u00a0KiB"
+    }
+  ],
+  "raw_scores": {
+    "performance": 39,
+    "seo": 92,
+    "accessibility": 72,
+    "best_practices": 81
+  }
+}

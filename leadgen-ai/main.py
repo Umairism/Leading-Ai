@@ -325,6 +325,53 @@ def main():
             lead_id = int(sys.argv[2])
             preview_outreach(lead_id)
         
+        elif command == 'audit-report':
+            from audit.report_generator import AuditReportGenerator
+            reporter = AuditReportGenerator()
+            if len(sys.argv) < 3:
+                reporter.print_all_reports()
+            else:
+                lead_id = int(sys.argv[2])
+                reporter.print_report(lead_id)
+
+        elif command == 'audit-export':
+            from audit.report_generator import AuditReportGenerator
+            reporter = AuditReportGenerator()
+            if len(sys.argv) >= 3:
+                lead_id = int(sys.argv[2])
+                path = reporter.export_html(lead_id)
+                if path:
+                    logger.info(f"Report saved: {path}")
+            else:
+                paths = reporter.export_all_html()
+                logger.info(f"Exported {len(paths)} audit reports to data/reports/")
+
+        elif command == 'test-smtp':
+            from outreach.email_sender import EmailSender
+            sender = EmailSender()
+            sender.test_connection()
+        
+        elif command == 'send':
+            from outreach.email_sender import EmailSender
+            sender = EmailSender()
+            limit = int(sys.argv[2]) if len(sys.argv) > 2 else 5
+            sender.send_batch(limit=limit)
+        
+        elif command == 'send-one':
+            if len(sys.argv) < 3:
+                logger.error("Usage: python main.py send-one <outreach_id>")
+                return
+            from outreach.email_sender import EmailSender
+            sender = EmailSender()
+            outreach_id = int(sys.argv[2])
+            sender.send_one(outreach_id)
+        
+        elif command == 'conversion-stats':
+            stats = OutreachRepository.get_conversion_stats()
+            logger.info("\n=== Conversion Funnel ===")
+            for k, v in stats.items():
+                logger.info(f"  {k}: {v}")
+        
         else:
             print_usage()
     
@@ -357,6 +404,14 @@ Usage: python main.py <command> [options]
   list-leads [limit]        List recent leads with audit status
   export                    Export pending outreach to CSV
   preview <lead_id>         Preview outreach for a specific lead
+  audit-report [lead_id]    View audit report (all leads or specific)
+  audit-export [lead_id]    Export audit as professional HTML report
+
+── Email Sending ──
+  test-smtp                 Test SMTP connection (no email sent)
+  send [limit]              Send pending outreach emails (default: 5)
+  send-one <outreach_id>    Send a single outreach email by ID
+  conversion-stats          Show conversion funnel metrics
 
 Examples:
   python main.py test-scraper        # Create sample leads
@@ -366,6 +421,7 @@ Examples:
   python main.py run-all 5 5         # Full pipeline (5 audits, 5 emails)
   python main.py preview 1           # Preview outreach for lead #1
   python main.py export              # Export results to CSV
+  python main.py send 5              # Send 5 pending emails
 
 Setup:
   1. pip install -r requirements.txt
