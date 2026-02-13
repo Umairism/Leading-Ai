@@ -165,6 +165,50 @@ class OutreachRepository:
                 .order_by(Outreach.qualification_score.desc())\
                 .limit(limit)\
                 .all()
+    
+    @staticmethod
+    def track_outcome(outreach_id: int, **kwargs):
+        """
+        Update outcome tracking fields for an outreach record.
+        
+        Usage:
+            OutreachRepository.track_outcome(1, replied=True, positive_reply=True)
+            OutreachRepository.track_outcome(1, meeting_booked=True, meeting_date=datetime)
+            OutreachRepository.track_outcome(1, client_closed=True, deal_value=500.0)
+        """
+        with Database.session_scope() as session:
+            outreach = session.query(Outreach).filter(Outreach.id == outreach_id).first()
+            if not outreach:
+                logger.warning(f"Outreach {outreach_id} not found")
+                return
+            
+            for key, value in kwargs.items():
+                if hasattr(outreach, key):
+                    setattr(outreach, key, value)
+            
+            logger.info(f"Updated outcome for outreach {outreach_id}: {kwargs}")
+    
+    @staticmethod
+    def get_conversion_stats() -> dict:
+        """Get conversion funnel stats across all outreach."""
+        with Database.session_scope() as session:
+            total = session.query(Outreach).count()
+            sent = session.query(Outreach).filter(Outreach.sent_at != None).count()
+            replied = session.query(Outreach).filter(Outreach.replied == True).count()
+            positive = session.query(Outreach).filter(Outreach.positive_reply == True).count()
+            meetings = session.query(Outreach).filter(Outreach.meeting_booked == True).count()
+            closed = session.query(Outreach).filter(Outreach.client_closed == True).count()
+            
+            return {
+                'total_generated': total,
+                'sent': sent,
+                'replied': replied,
+                'positive_replies': positive,
+                'meetings_booked': meetings,
+                'clients_closed': closed,
+                'reply_rate': f"{(replied/sent*100):.1f}%" if sent else "0%",
+                'close_rate': f"{(closed/sent*100):.1f}%" if sent else "0%",
+            }
 
 
 class SystemLogRepository:

@@ -79,7 +79,3 @@ class Database:
         if cls._engine:
             cls._engine.dispose()
             logger.info("Database connections closed")
-
-
-# Initialize database on module import
-Database.initialize()

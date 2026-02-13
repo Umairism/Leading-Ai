@@ -91,6 +91,14 @@ class Outreach(Base):
     replied = Column(Boolean, default=False)
     converted = Column(Boolean, default=False)
     
+    # Outcome Metrics (for scientific conversion tracking)
+    positive_reply = Column(Boolean, default=False)
+    meeting_booked = Column(Boolean, default=False)
+    meeting_date = Column(DateTime)
+    client_closed = Column(Boolean, default=False)
+    deal_value = Column(Float)  # Revenue if closed
+    outcome_notes = Column(Text)  # Manual notes on what happened
+    
     # Response Data
     reply_received_at = Column(DateTime)
     reply_content = Column(Text)

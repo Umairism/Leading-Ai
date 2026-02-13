@@ -19,12 +19,19 @@ class Config:
     GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
     PAGESPEED_API_KEY = os.getenv('PAGESPEED_API_KEY', '')
     
-    # Database
-    DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///data/leadgen.db')
+    # Database - always use absolute path
+    _db_env = os.getenv('DATABASE_URL', '')
+    if _db_env and not _db_env.startswith('sqlite:////'):
+        # Relative sqlite path in env - convert to absolute
+        DATABASE_URL = f'sqlite:///{BASE_DIR}/data/leadgen.db'
+    elif _db_env:
+        DATABASE_URL = _db_env
+    else:
+        DATABASE_URL = f'sqlite:///{BASE_DIR}/data/leadgen.db'
     
-    # Email Configuration
+    # Email Configuration (supports both Gmail password and Brevo API key)
     SMTP_EMAIL = os.getenv('SMTP_EMAIL', '')
-    SMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '')
+    SMTP_PASSWORD = os.getenv('SMTP_PASSWORD', '') or os.getenv('SMTP_ApiKey', '')
     SMTP_HOST = os.getenv('SMTP_HOST', 'smtp.gmail.com')
     SMTP_PORT = int(os.getenv('SMTP_PORT', 587))
     
@@ -85,10 +92,6 @@ class Config:
     @classmethod
     def ensure_directories(cls):
         """Create necessary directories if they don't exist."""
-        cls.LOGS_DIR.mkdir(exist_ok=True)
-        cls.DATA_DIR.mkdir(exist_ok=True)
-        cls.EXPORTS_DIR.mkdir(exist_ok=True)
-
-
-# Initialize directories on import
-Config.ensure_directories()
+        cls.LOGS_DIR.mkdir(parents=True, exist_ok=True)
+        cls.DATA_DIR.mkdir(parents=True, exist_ok=True)
+        cls.EXPORTS_DIR.mkdir(parents=True, exist_ok=True)

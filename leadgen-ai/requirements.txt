@@ -1,34 +1,22 @@
 # Core Dependencies
-requests==2.31.0
-beautifulsoup4==4.12.3
+requests>=2.31.0
+beautifulsoup4>=4.12.0
 lxml
 
-# Browser Automation
-playwright==1.42.0
+# Browser Automation (optional for MVP)
+# playwright>=1.42.0
 
 # Database
-sqlalchemy==2.0.27
-alembic==1.13.1
+sqlalchemy>=2.0.0
 
 # Data Processing
-pandas==2.2.0
+# pandas>=2.2.0
 
-# AI Integration
-google-generativeai==0.4.0
-
-# Async Support
-aiohttp==3.9.3
-asyncio==3.4.3
+# AI Integration (new unified Google GenAI SDK)
+google-genai>=1.0.0
 
 # Environment & Configuration
-python-dotenv==1.0.1
-
-# Email
-secure-smtplib==0.1.1
-
-# Scheduling
-apscheduler==3.10.4
+python-dotenv>=1.0.0
 
 # Utilities
-python-dateutil==2.8.2
-validators==0.22.0
+validators>=0.22.0

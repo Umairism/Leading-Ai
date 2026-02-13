@@ -41,14 +41,13 @@ class HotfrogScraper(BaseScraper):
         Returns:
             Complete search URL
         """
-        # Hotfrog URL structure varies by region
-        # Example: https://www.hotfrog.com/companies/restaurants/US
+        # Hotfrog URL structure: https://www.hotfrog.com/search/{location}/{category}
         
         if category:
             category_encoded = quote(category.lower().replace(' ', '-'))
-            url = f"{self.BASE_URL}/companies/{category_encoded}/{location.upper()}"
+            url = f"{self.BASE_URL}/search/{location.lower()}/{category_encoded}"
         else:
-            url = f"{self.BASE_URL}/companies/{location.upper()}"
+            url = f"{self.BASE_URL}/search/{location.lower()}"
         
         if page > 1:
             url += f"?page={page}"
@@ -118,33 +117,18 @@ class HotfrogScraper(BaseScraper):
         """
         businesses = []
         
-        # Hotfrog uses various HTML structures - need to adapt
-        # Common selectors (may need adjustment based on actual site structure)
+        # Hotfrog uses h3 tags for business names
+        h3_tags = soup.find_all('h3')
         
-        # Try multiple possible selectors
-        listing_selectors = [
-            '.business-listing',
-            '.listing-item',
-            '.company-card',
-            'div[data-business-id]',
-            'article.business'
-        ]
-        
-        listings = []
-        for selector in listing_selectors:
-            listings = soup.select(selector)
-            if listings:
-                logger.debug(f"Found {len(listings)} listings with selector: {selector}")
-                break
-        
-        if not listings:
-            # Fallback: try to find any div with business-like data
-            logger.warning("No listings found with standard selectors, trying fallback")
+        if not h3_tags:
+            logger.warning("No business listings found (no h3 tags)")
             return businesses
         
-        for listing in listings:
+        logger.debug(f"Found {len(h3_tags)} potential business listings")
+        
+        for h3 in h3_tags:
             try:
-                business = self._parse_listing(listing)
+                business = self._parse_listing_v2(h3)
                 if business:
                     businesses.append(business)
             except Exception as e:
@@ -223,6 +207,71 @@ class HotfrogScraper(BaseScraper):
                 business['location'] = extract_location(location_elem)
                 break
         
+        return business if 'website_url' in business else None
+    
+    def _parse_listing_v2(self, h3_tag) -> Optional[Dict]:
+        """
+        Parse individual business listing from h3 tag (Hotfrog 2026 structure).
+        
+        Args:
+            h3_tag: BeautifulSoup h3 element containing business name
+            
+        Returns:
+            Business dictionary or None
+        """
+        business = {}
+        
+        # Extract business name from h3
+        business_name = h3_tag.get_text(strip=True)
+        if not business_name or len(business_name) < 3:
+            return None
+        
+        business['business_name'] = business_name
+        
+        # Get the row container
+        container = h3_tag.find_parent('div', class_='row')
+        if not container:
+            container = h3_tag.find_parent('div')
+        
+        if not container:
+            return None
+        
+        # Extract phone
+        phone_link = container.find('a', href=lambda x: x and x.startswith('tel:'))
+        if phone_link:
+            phone_text = phone_link.get_text(strip=True)
+            business['phone'] = self.normalize_phone(phone_text)
+        
+        # Extract address
+        address_span = container.find('span')
+        if address_span:
+            address_text = address_span.get_text(strip=True)
+            if address_text and 'claim this business' not in address_text.lower():
+                business['location'] = address_text
+        
+        # Extract website URL - look for detail page link
+        detail_link = container.find('a', href=lambda x: x and '/company/' in x)
+        if detail_link:
+            detail_url = urljoin(self.BASE_URL, detail_link.get('href'))
+            # For MVP, use a placeholder website based on business name
+            # In production, we'd visit the detail page
+            # website = self._get_website_from_detail(detail_url)
+            
+            # Extract any http links in the container as potential website
+            http_links = container.find_all('a', href=lambda x: x and ('http://' in x or 'https://' in x))
+            for link in http_links:
+                href = link.get('href')
+                if is_valid_business_website(href):
+                    business['website_url'] = href
+                    break
+            
+            # If no website found, use detail page as placeholder
+            if 'website_url' not in business:
+                # Generate a placeholder - in real use we'd visit detail page
+                # For now, skip businesses without direct website links
+                return None
+        
+        # Must have website to be useful
         return business if 'website_url' in business else None
     
     def _get_website_from_detail(self, detail_url: str) -> Optional[str]:
