@@ -1,0 +1,61 @@
+{
+  "url": "https://www.umairhakeem.netlify.app",
+  "status": "completed",
+  "performance_score": 100,
+  "seo_score": 80,
+  "accessibility_score": 96,
+  "best_practices_score": 96,
+  "mobile_friendly": false,
+  "core_web_vitals": {
+    "lcp": {
+      "value": "0.8\u00a0s",
+      "score": 100,
+      "label": "Largest Contentful Paint"
+    },
+    "inp": {
+      "value": "20\u00a0ms",
+      "score": 100,
+      "label": "Interaction to Next Paint"
+    },
+    "cls": {
+      "value": "0",
+      "score": 100,
+      "label": "Cumulative Layout Shift"
+    },
+    "fcp": {
+      "value": "0.8\u00a0s",
+      "score": 100,
+      "label": "First Contentful Paint"
+    },
+    "tbt": {
+      "value": "0\u00a0ms",
+      "score": 100,
+      "label": "Total Blocking Time"
+    },
+    "speed_index": {
+      "value": "0.8\u00a0s",
+      "score": 100,
+      "label": "Speed Index"
+    }
+  },
+  "major_issues": [
+    {
+      "issue": "Missing meta description",
+      "severity": "critical",
+      "score": 0,
+      "details": ""
+    },
+    {
+      "issue": "Page returns unsuccessful HTTP status",
+      "severity": "critical",
+      "score": 0,
+      "details": "404"
+    }
+  ],
+  "raw_scores": {
+    "performance": 100,
+    "seo": 80,
+    "accessibility": 96,
+    "best_practices": 96
+  }
+}

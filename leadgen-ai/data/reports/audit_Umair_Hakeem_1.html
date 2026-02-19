@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Audit — The Golden Spoon Diner</title>
+    <title>Website Audit — Umair Hakeem</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -115,10 +115,10 @@
     <div class="report">
         <div class="header">
             <h1>Website Audit Report</h1>
-            <div class="subtitle">The Golden Spoon Diner</div>
+            <div class="subtitle">Umair Hakeem</div>
             <div class="meta">
-                <span>🌐 https://www.goldenspoon.com</span>
-                <span>📅 February 13, 2026</span>
+                <span>🌐 https://www.umairhakeem.netlify.app</span>
+                <span>📅 February 19, 2026</span>
             </div>
         </div>
 
@@ -126,35 +126,65 @@
             <h2>Performance Scores</h2>
             <div class="scores">
                 
-            <div class="score-card poor">
-                <div class="score-value">0</div>
+            <div class="score-card good">
+                <div class="score-value">100</div>
                 <div class="score-label">Performance</div>
             </div>
-            <div class="score-card poor">
-                <div class="score-value">0</div>
+            <div class="score-card average">
+                <div class="score-value">80</div>
                 <div class="score-label">SEO</div>
             </div>
-            <div class="score-card poor">
-                <div class="score-value">0</div>
+            <div class="score-card good">
+                <div class="score-value">96</div>
                 <div class="score-label">Accessibility</div>
             </div>
-            <div class="score-card unknown">
-                <div class="score-value">0</div>
+            <div class="score-card good">
+                <div class="score-value">96</div>
                 <div class="score-label">Best Practices</div>
             </div>
             </div>
 
-            
-            
+            <h2>Core Web Vitals</h2>
+            <table><tr><th>Metric</th><th>Value</th><th>Score</th></tr>
+                    <tr>
+                        <td>Largest Contentful Paint</td>
+                        <td>0.8 s</td>
+                        <td class="good">100/100</td>
+                    </tr>
+                    <tr>
+                        <td>First Contentful Paint</td>
+                        <td>0.8 s</td>
+                        <td class="good">100/100</td>
+                    </tr>
+                    <tr>
+                        <td>Interaction to Next Paint</td>
+                        <td>20 ms</td>
+                        <td class="good">100/100</td>
+                    </tr>
+                    <tr>
+                        <td>Cumulative Layout Shift</td>
+                        <td>0</td>
+                        <td class="good">100/100</td>
+                    </tr>
+                    <tr>
+                        <td>Total Blocking Time</td>
+                        <td>0 ms</td>
+                        <td class="good">100/100</td>
+                    </tr>
+                    <tr>
+                        <td>Speed Index</td>
+                        <td>0.8 s</td>
+                        <td class="good">100/100</td>
+                    </tr></table>
 
             <h2>Technical Checks</h2>
             <table>
                 <tr><th>Check</th><th>Status</th></tr>
-                <tr><td>SSL / HTTPS</td><td><span class="pass">✅ Pass</span></td></tr><tr><td>Page Title</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Meta Description</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Mobile Viewport</td><td><span class="pass">✅ Pass</span></td></tr><tr><td>Open Graph Tags</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Favicon</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Mobile Friendly</td><td><span class="fail">❌ Fail</span></td></tr>
+                <tr><td>SSL / HTTPS</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Page Title</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Meta Description</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Mobile Viewport</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Open Graph Tags</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Favicon</td><td><span class="fail">❌ Fail</span></td></tr><tr><td>Mobile Friendly</td><td><span class="fail">❌ Fail</span></td></tr>
             </table>
 
-            <h2>Issues Found (4)</h2>
-            <h3>🚨 Critical Issues</h3><ul class="issues critical"><li>Slow page load (7251ms) — <em>Users abandon sites that take over 3 seconds</em></li></ul><h3>⚠️ Warnings</h3><ul class="issues warnings"><li>Missing meta description — <em>Search engines use this for result snippets</em></li><li>No H1 heading found — <em>Bad for SEO and content structure</em></li><li>Missing Open Graph tags — <em>Social media shares will look unprofessional</em></li></ul>
+            <h2>Issues Found (6)</h2>
+            <h3>🚨 Critical Issues</h3><ul class="issues critical"><li>Missing meta description</li><li>Page returns unsuccessful HTTP status — <em>404</em></li><li>SSL certificate missing or invalid — <em>[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'www.umairhakeem.netlify.app'. (_ssl.c:1081)</em></li><li>Missing viewport meta tag (not mobile optimized) — <em>Site will display poorly on mobile devices</em></li></ul><h3>⚠️ Warnings</h3><ul class="issues warnings"><li>No H1 heading found — <em>Bad for SEO and content structure</em></li><li>Missing Open Graph tags — <em>Social media shares will look unprofessional</em></li></ul>
         </div>
 
         <div class="footer">
